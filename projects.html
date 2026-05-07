@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — DevPortfolio</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ── PROJECTS PAGE ── */
+.page-hero {
+  padding: 5rem 0 3rem;
+  text-align: center;
+  position: relative;
+}
+.page-hero h1 { margin-bottom: 1rem; }
+.page-hero p { color: var(--muted); max-width: 540px; margin: 0 auto; font-size: 1.05rem; }
+
+/* Filter Tabs */
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  justify-content: center; margin: 3rem 0 2.5rem;
+}
+.filter-btn {
+  padding: 0.45rem 1.2rem; border-radius: 99px;
+  border: 1px solid var(--border); background: none;
+  color: var(--muted); font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; font-family: var(--body); transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+.filter-btn:hover { border-color: rgba(0,210,255,0.3); color: var(--text); }
+.filter-btn.active { background: var(--grad); color: #fff; border-color: transparent; }
+
+/* Projects Grid */
+.projects-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem; margin-bottom: 6rem;
+}
+
+.project-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  transition: all 0.35s; position: relative;
+  display: flex; flex-direction: column;
+}
+.project-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,210,255,0.04), transparent);
+  opacity: 0; transition: opacity 0.35s; pointer-events: none; z-index: 0;
+}
+.project-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(0,210,255,0.25);
+  box-shadow: 0 28px 70px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,210,255,0.08);
+}
+.project-card:hover::before { opacity: 1; }
+
+/* Thumb */
+.proj-thumb {
+  width: 100%; height: 210px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem; position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.proj-thumb::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, var(--bg2));
+}
+.proj-thumb span { position: relative; z-index: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+
+.proj-body { padding: 1.4rem; display: flex; flex-direction: column; flex: 1; position: relative; z-index: 1; }
+
+.proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem; }
+
+.proj-title { font-family: var(--heading); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
+.proj-desc { color: var(--muted); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.2rem; flex: 1; }
+
+.proj-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 1rem; border-top: 1px solid var(--border); gap: 0.5rem;
+}
+.tech-pills { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.tech-pill {
+  font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 4px;
+  background: rgba(255,255,255,0.04); color: var(--muted); font-weight: 500;
+  border: 1px solid var(--border);
+}
+.proj-link {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.78rem; font-weight: 600; color: var(--cyan);
+  text-decoration: none; padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(0,210,255,0.2); border-radius: 99px;
+  transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+}
+.proj-link:hover { background: rgba(0,210,255,0.12); border-color: rgba(0,210,255,0.4); }
+
+/* Hidden cards during filter */
+.project-card.hide {
+  display: none;
+}
+
+/* Stats strip */
+.stats-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; margin: 0 0 5rem;
+}
+.strip-stat {
+  text-align: center; padding: 1.5rem 1rem;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.strip-num {
+  font-family: var(--heading); font-size: 2rem; font-weight: 800;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.strip-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+
+@media (max-width: 600px) {
+  .stats-strip { grid-template-columns: repeat(2,1fr); }
+  .projects-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="loader"><div class="loader-ring"></div></div>
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+<div class="float-socials">
+  <a href="mailto:hello@yourname.com" class="float-social"><i class="fas fa-envelope"></i></a>
+  <a href="https://facebook.com" target="_blank" class="float-social"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://github.com" target="_blank" class="float-social"><i class="fab fa-github"></i></a>
+  <a href="https://linkedin.com" target="_blank" class="float-social"><i class="fab fa-linkedin-in"></i></a>
+</div>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">&lt;<em>Dev</em>/&gt;</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#" class="nav-cta" onclick="dlCV(event)"><i class="fas fa-download"></i>&nbsp; Download CV</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="container">
+
+    <!-- PAGE HERO -->
+    <div class="page-hero page-enter">
+      <div class="section-label" style="justify-content:center;margin-bottom:1rem">Portfolio</div>
+      <h1 class="page-title">My Projects</h1>
+      <p>A curated collection of websites, management systems, and web applications I've built — showcasing clean code and great design.</p>
+    </div>
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+      <div class="strip-stat reveal"><div class="strip-num">20+</div><div class="strip-lbl">Projects Built</div></div>
+      <div class="strip-stat reveal delay-1"><div class="strip-num">15+</div><div class="strip-lbl">Happy Clients</div></div>
+      <div class="strip-stat reveal delay-2"><div class="strip-num">6+</div><div class="strip-lbl">System Projects</div></div>
+      <div class="strip-stat reveal delay-3"><div class="strip-num">10+</div><div class="strip-lbl">Websites Launched</div></div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" onclick="filter('all',this)">All</button>
+      <button class="filter-btn" onclick="filter('website',this)">🌐 Websites</button>
+      <button class="filter-btn" onclick="filter('system',this)">💻 Systems</button>
+      <button class="filter-btn" onclick="filter('data',this)">📊 Data / Academic</button>
+    </div>
+
+    <!-- GRID -->
+    <div class="projects-grid" id="projects-grid">
+
+      <div class="project-card reveal" data-cat="system">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#071525,#0d2440)"><span>🏥</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">Full Stack</span></div>
+          <div class="proj-title">Healthcare Management System</div>
+          <p class="proj-desc">Comprehensive patient records system with appointment tracking, admin dashboard, user roles, and PDF report export for a local clinic.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">Bootstrap</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal delay-1" data-cat="system">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#061220,#0a1e38)"><span>👴</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">Thesis</span><span class="tag-cyan">Web App</span></div>
+          <div class="proj-title">AGAPO Care Connect</div>
+          <p class="proj-desc">Senior Citizen Information & Assistance Management System for a local barangay — featuring senior registration, health records, and admin dashboard.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">React</span><span class="tech-pill">TypeScript</span><span class="tech-pill">Supabase</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal delay-2" data-cat="system">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#071018,#0b1a28)"><span>📄</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">PHP</span></div>
+          <div class="proj-title">Document Tracking System</div>
+          <p class="proj-desc">Deep-teal themed document routing and status tracking system with full CRUD, user roles, and tracking history built on WAMP/MySQL localhost.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">WAMP</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal" data-cat="website">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#080e1e,#0d1836)"><span>🛒</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">Website</span><span class="tag-cyan">Business</span></div>
+          <div class="proj-title">Business Landing Page</div>
+          <p class="proj-desc">Sleek, conversion-focused business landing page with animated hero section, services, testimonials, and an integrated contact form.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">React</span><span class="tech-pill">Tailwind</span><span class="tech-pill">Vercel</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal delay-1" data-cat="website">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#060e1c,#0a1830)"><span>💼</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">Portfolio</span><span class="tag-cyan">Website</span></div>
+          <div class="proj-title">Personal Portfolio Site</div>
+          <p class="proj-desc">Premium dark-theme personal portfolio with hero section, project showcase, pricing page, and contact form — deployed on Vercel.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal delay-2" data-cat="data">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#06101a,#0a1c2e)"><span>📊</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">Data</span><span class="tag-cyan">Academic</span></div>
+          <div class="proj-title">OLAP Data Cube System</div>
+          <p class="proj-desc">Interactive OLAP data cube visualization with drill-down, roll-up, and slice-dice operations — built as an academic project for a Data Warehousing course.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">HTML</span><span class="tech-pill">D3.js</span><span class="tech-pill">JavaScript</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal" data-cat="data">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#0a0d1c,#111530)"><span>🎮</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">Game</span><span class="tag-cyan">Academic</span></div>
+          <div class="proj-title">OSQuest — Quiz Platform</div>
+          <p class="proj-desc">Arcade-style multi-subject quiz game for Operating Systems topics with 150+ questions per subject, scoreboard, and full responsive design.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">React</span><span class="tech-pill">Vite</span><span class="tech-pill">Vercel</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal delay-1" data-cat="system">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#080c1a,#0d1530)"><span>🏪</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">Inventory</span></div>
+          <div class="proj-title">Inventory Management System</div>
+          <p class="proj-desc">Inventory tracking system with product management, stock alerts, transaction history, and user login/register for small businesses.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">jQuery</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal delay-2" data-cat="website">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#060a18,#0b1228)"><span>🍽️</span></div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag-cyan">Website</span><span class="tag-cyan">Restaurant</span></div>
+          <div class="proj-title">Restaurant Landing Page</div>
+          <p class="proj-desc">Modern restaurant website with animated menu section, gallery, reservation form, and Google Maps integration. Mobile-first responsive design.</p>
+          <div class="proj-footer">
+            <div class="tech-pills"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span></div>
+            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-logo">&lt;Dev/&gt;</div>
+    <p>Built by <strong>Your Name</strong> · Freelance Web & System Developer · Philippines 🇵🇭</p>
+    <p style="margin-top:0.3rem">© 2025 All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('gone'), 500));
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
+  document.getElementById('back-top').classList.toggle('visible', scrollY > 400);
+});
+const ham = document.getElementById('hamburger'), nl = document.getElementById('nav-links');
+ham.addEventListener('click', () => {
+  nl.classList.toggle('open');
+  const sp = ham.querySelectorAll('span');
+  if (nl.classList.contains('open')) { sp[0].style.transform='rotate(45deg) translate(5px,5px)';sp[1].style.opacity='0';sp[2].style.transform='rotate(-45deg) translate(5px,-5px)'; }
+  else { sp.forEach(s=>{s.style.transform='';s.style.opacity='';}); }
+});
+
+function filter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.project-card').forEach(c => {
+    if (cat === 'all' || c.dataset.cat === cat) c.classList.remove('hide');
+    else c.classList.add('hide');
+  });
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+function dlCV(e) { e.preventDefault(); alert('📄 Replace this with your actual CV file link!'); }
+</script>
+</body>
+</html>

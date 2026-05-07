@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — DevPortfolio</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ── HOME-SPECIFIC ── */
+#home {
+  min-height: calc(100vh - var(--nav-h));
+  display: flex; align-items: center;
+  padding: 5rem 0 4rem;
+}
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+
+/* Badge */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.4rem 1rem; border-radius: 99px;
+  border: 1px solid rgba(0,210,255,0.22);
+  background: rgba(0,210,255,0.05);
+  font-size: 0.78rem; color: var(--cyan); font-weight: 600;
+  margin-bottom: 1.5rem; letter-spacing: 0.03em;
+}
+.dot-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(0.75)} }
+
+/* Heading */
+h1.hero-title {
+  font-family: var(--heading); font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+  font-weight: 800; line-height: 1.06; letter-spacing: -0.025em;
+  margin-bottom: 1rem;
+}
+.grad-line { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Typing */
+.typing-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 1rem; margin-bottom: 1.2rem; color: var(--muted); min-height: 1.8em;
+}
+.typing-prefix { color: var(--cyan); font-weight: 600; font-family: monospace; }
+#typing-text { color: var(--text); font-weight: 600; }
+.cursor {
+  display: inline-block; width: 2px; height: 1.1em;
+  background: var(--cyan); margin-left: 1px;
+  animation: blink 0.9s step-end infinite; vertical-align: text-bottom;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-desc { color: var(--muted); font-size: 1.05rem; max-width: 480px; margin-bottom: 2.2rem; }
+
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+/* Stats */
+.hero-stats {
+  display: flex; gap: 2.5rem;
+  padding-top: 2rem; border-top: 1px solid var(--border);
+}
+.stat-num {
+  font-family: var(--heading); font-size: 2rem; font-weight: 800;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* Code Window */
+.code-window {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+  position: relative;
+}
+.code-window::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,210,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.code-titlebar {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.2rem;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+}
+.cwin-dot { width: 12px; height: 12px; border-radius: 50%; }
+.cwin-r { background: #ff5f57; } .cwin-y { background: #febc2e; } .cwin-g { background: #28c840; }
+.cwin-name { font-size: 0.74rem; color: var(--muted); margin-left: 0.5rem; font-family: monospace; }
+.code-body { padding: 1.4rem 1.6rem; font-family: 'Courier New', monospace; font-size: 0.81rem; line-height: 1.95; }
+.code-line { display: block; }
+.c-kw { color: #c084fc; } .c-fn { color: #60a5fa; }
+.c-str { color: #34d399; } .c-cmt { color: #374151; }
+.c-var { color: var(--cyan); } .c-num { color: #fb923c; }
+
+.skills-bar {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  padding: 1rem 1.6rem 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Services section */
+#services { padding: 6rem 0; }
+.services-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem; margin-top: 1rem;
+}
+.service-card {
+  padding: 2rem; border-radius: var(--radius);
+  background: var(--bg2); border: 1px solid var(--border);
+  position: relative; overflow: hidden; transition: all 0.3s;
+}
+.service-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: var(--grad);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+}
+.service-card:hover { transform: translateY(-5px); border-color: rgba(0,210,255,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+.service-card:hover::after { transform: scaleX(1); }
+.service-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--grad); display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: #fff; margin-bottom: 1.2rem;
+}
+.service-title { font-family: var(--heading); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.service-desc { color: var(--muted); font-size: 0.875rem; }
+
+/* Tech stack */
+#techstack { padding: 6rem 0; }
+.tech-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem; margin-top: 1rem;
+}
+.tech-item {
+  display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+  padding: 1.4rem 1rem; border-radius: var(--radius-sm);
+  background: var(--bg2); border: 1px solid var(--border);
+  font-size: 0.8rem; color: var(--muted); font-weight: 500;
+  transition: all 0.25s; cursor: default;
+}
+.tech-item:hover { border-color: rgba(0,210,255,0.3); color: var(--text); transform: translateY(-3px); }
+.tech-icon { font-size: 1.8rem; }
+
+/* CTA Banner */
+.cta-banner {
+  margin: 6rem 0 5rem;
+  padding: 3.5rem; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(58,123,213,0.08));
+  border: 1px solid rgba(0,210,255,0.15);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: ''; position: absolute; top: -50%; right: -10%;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(0,210,255,0.05); filter: blur(60px);
+}
+.cta-banner h3 {
+  font-family: var(--heading); font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;
+}
+.cta-banner p { color: var(--muted); max-width: 500px; }
+
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .code-window { display: none; }
+  .hero-stats { gap: 1.5rem; }
+  .cta-banner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div id="loader"><div class="loader-ring"></div></div>
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+<!-- Floating Socials -->
+<div class="float-socials">
+  <a href="mailto:hello@yourname.com" class="float-social" title="Email"><i class="fas fa-envelope"></i></a>
+  <a href="https://facebook.com" target="_blank" class="float-social" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://github.com" target="_blank" class="float-social" title="GitHub"><i class="fab fa-github"></i></a>
+  <a href="https://linkedin.com" target="_blank" class="float-social" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+</div>
+
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">&lt;<em>Dev</em>/&gt;</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#" class="nav-cta" onclick="dlCV(event)"><i class="fas fa-download"></i>&nbsp; Download CV</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+
+<!-- ══ HERO ══ -->
+<section id="home">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-left page-enter">
+        <div class="status-badge"><div class="dot-pulse"></div>Available for freelance work</div>
+        <h1 class="hero-title">Freelance<br><span class="grad-line">Web & System</span><br>Developer</h1>
+        <div class="typing-row">
+          <span class="typing-prefix">// </span>
+          <span id="typing-text"></span><span class="cursor"></span>
+        </div>
+        <p class="hero-desc">I craft clean, modern, and functional websites and management systems that help individuals and businesses grow. From landing pages to full-stack CRUD systems — built right, the first time.</p>
+        <div class="hero-btns">
+          <a href="projects.html" class="btn btn-primary"><i class="fas fa-folder-open"></i> View Projects</a>
+          <a href="contact.html" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Contact Me</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Projects Completed</div></div>
+          <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Happy Clients</div></div>
+          <div class="stat-item"><div class="stat-num">2+</div><div class="stat-label">Years Experience</div></div>
+        </div>
+      </div>
+
+      <div class="hero-right page-enter" style="animation-delay:0.15s">
+        <div class="code-window">
+          <div class="code-titlebar">
+            <div class="cwin-dot cwin-r"></div>
+            <div class="cwin-dot cwin-y"></div>
+            <div class="cwin-dot cwin-g"></div>
+            <span class="cwin-name">portfolio.ts</span>
+          </div>
+          <div class="code-body">
+<span class="code-line"><span class="c-kw">const</span> <span class="c-var">developer</span> = {</span>
+<span class="code-line">  <span class="c-fn">name</span>: <span class="c-str">"Your Name"</span>,</span>
+<span class="code-line">  <span class="c-fn">role</span>: <span class="c-str">"Freelance Developer"</span>,</span>
+<span class="code-line">  <span class="c-fn">skills</span>: [</span>
+<span class="code-line">    <span class="c-str">"React"</span>, <span class="c-str">"TypeScript"</span>,</span>
+<span class="code-line">    <span class="c-str">"Tailwind CSS"</span>, <span class="c-str">"Supabase"</span>,</span>
+<span class="code-line">    <span class="c-str">"Node.js"</span>, <span class="c-str">"PHP"</span>, <span class="c-str">"MySQL"</span></span>
+<span class="code-line">  ],</span>
+<span class="code-line">  <span class="c-fn">available</span>: <span class="c-kw">true</span>,</span>
+<span class="code-line">  <span class="c-fn">experience</span>: <span class="c-num">2</span> + <span class="c-str">" years"</span>,</span>
+<span class="code-line">  <span class="c-fn">location</span>: <span class="c-str">"Philippines 🇵🇭"</span></span>
+<span class="code-line">};</span>
+<span class="code-line">&nbsp;</span>
+<span class="code-line"><span class="c-cmt">// Let's build something great! 🚀</span></span>
+<span class="code-line"><span class="c-fn">console</span>.<span class="c-var">log</span>(<span class="c-str">"Ready to collaborate!"</span>);</span>
+          </div>
+          <div class="skills-bar">
+            <span class="chip">React</span><span class="chip">TypeScript</span>
+            <span class="chip">Tailwind</span><span class="chip">PHP</span>
+            <span class="chip">MySQL</span><span class="chip">Supabase</span>
+            <span class="chip">Vite</span><span class="chip">Node.js</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="container">
+    <div class="reveal"><div class="section-label">What I Do</div></div>
+    <h2 class="section-title reveal">Services I Offer</h2>
+    <p class="section-sub reveal">Covering the full spectrum from design to deployment — I turn ideas into polished digital products.</p>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-globe"></i></div>
+        <div class="service-title">Web Development</div>
+        <p class="service-desc">Modern, responsive websites built with React, Tailwind CSS, and Vite. From landing pages to multi-page business sites.</p>
+      </div>
+      <div class="service-card reveal delay-1">
+        <div class="service-icon"><i class="fas fa-database"></i></div>
+        <div class="service-title">System Development</div>
+        <p class="service-desc">Full-stack CRUD management systems with authentication, dashboards, user roles, and database integration.</p>
+      </div>
+      <div class="service-card reveal delay-2">
+        <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
+        <div class="service-title">UI/UX Design</div>
+        <p class="service-desc">Clean, intuitive interfaces with thoughtful UX — ensuring every product feels great to use, not just look at.</p>
+      </div>
+      <div class="service-card reveal delay-3">
+        <div class="service-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="service-title">Reports & Export</div>
+        <p class="service-desc">Built-in PDF export, data tables, printable reports, and dashboard analytics for management systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TECH STACK ══ -->
+<section id="techstack">
+  <div class="container">
+    <div class="reveal"><div class="section-label">Tools & Technologies</div></div>
+    <h2 class="section-title reveal">My Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-item reveal"><span class="tech-icon">⚛️</span>React</div>
+      <div class="tech-item reveal delay-1"><span class="tech-icon">🔷</span>TypeScript</div>
+      <div class="tech-item reveal delay-2"><span class="tech-icon">🎨</span>Tailwind CSS</div>
+      <div class="tech-item reveal delay-3"><span class="tech-icon">⚡</span>Vite</div>
+      <div class="tech-item reveal"><span class="tech-icon">🐘</span>PHP</div>
+      <div class="tech-item reveal delay-1"><span class="tech-icon">🗄️</span>MySQL</div>
+      <div class="tech-item reveal delay-2"><span class="tech-icon">🟢</span>Supabase</div>
+      <div class="tech-item reveal delay-3"><span class="tech-icon">🟩</span>Node.js</div>
+      <div class="tech-item reveal"><span class="tech-icon">🔺</span>Vercel</div>
+      <div class="tech-item reveal delay-1"><span class="tech-icon">🐙</span>GitHub</div>
+      <div class="tech-item reveal delay-2"><span class="tech-icon">🪟</span>WAMP</div>
+      <div class="tech-item reveal delay-3"><span class="tech-icon">📦</span>PostgreSQL</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ══ -->
+<div class="container">
+  <div class="cta-banner reveal">
+    <div>
+      <h3>Got a project in mind?</h3>
+      <p>Let's discuss your idea and turn it into a professional, polished product. Affordable rates, clean code, and timely delivery — guaranteed.</p>
+    </div>
+    <div style="display:flex;gap:1rem;flex-shrink:0;flex-wrap:wrap">
+      <a href="pricing.html" class="btn btn-ghost">View Pricing</a>
+      <a href="contact.html" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Start a Project</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">&lt;Dev/&gt;</div>
+    <p>Built by <strong>Your Name</strong> · Freelance Web & System Developer · Philippines 🇵🇭</p>
+    <p style="margin-top:0.3rem">© 2025 All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('gone'), 500));
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
+  document.getElementById('back-top').classList.toggle('visible', scrollY > 400);
+});
+
+const ham = document.getElementById('hamburger');
+const nl = document.getElementById('nav-links');
+ham.addEventListener('click', () => {
+  nl.classList.toggle('open');
+  const sp = ham.querySelectorAll('span');
+  if (nl.classList.contains('open')) {
+    sp[0].style.transform = 'rotate(45deg) translate(5px,5px)';
+    sp[1].style.opacity = '0';
+    sp[2].style.transform = 'rotate(-45deg) translate(5px,-5px)';
+  } else { sp.forEach(s => { s.style.transform = ''; s.style.opacity = ''; }); }
+});
+nl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  nl.classList.remove('open');
+  ham.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+}));
+
+// Typing
+const skills = ['Web Development','System Development','UI/UX Design','Responsive Websites','CRUD Systems','Database Design'];
+let si=0,ci=0,del=false;
+const el = document.getElementById('typing-text');
+function type() {
+  const w = skills[si];
+  el.textContent = del ? w.substring(0,ci--) : w.substring(0,ci++);
+  let d = del ? 55 : 85;
+  if (!del && ci===w.length+1) { d=1800; del=true; }
+  if (del && ci===0) { del=false; si=(si+1)%skills.length; d=400; }
+  setTimeout(type, d);
+}
+setTimeout(type, 900);
+
+// Reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+function dlCV(e) { e.preventDefault(); alert('📄 Replace this with your actual CV file link!'); }
+</script>
+</body>
+</html>

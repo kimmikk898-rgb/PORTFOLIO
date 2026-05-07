@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — DevPortfolio</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ── PRICING PAGE ── */
+.page-hero {
+  padding: 4rem 0 2.5rem;
+  text-align: center;
+}
+.page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 540px; margin: 0.8rem auto 0; }
+
+/* Tabs */
+.pricing-tabs {
+  display: flex; gap: 0.4rem;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 99px; padding: 4px; width: fit-content;
+  margin: 2.5rem auto 3rem;
+}
+.tab-btn {
+  padding: 0.5rem 1.4rem; border-radius: 99px;
+  font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  background: none; border: none; color: var(--muted);
+  font-family: var(--body); transition: all 0.25s;
+}
+.tab-btn.active { background: var(--grad); color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeUp 0.4s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+
+/* Pricing Cards */
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-bottom: 3rem;
+}
+.price-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem;
+  position: relative; transition: all 0.3s;
+  display: flex; flex-direction: column;
+}
+.price-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0,210,255,0.25);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+}
+.price-card.featured {
+  border-color: rgba(0,210,255,0.4);
+  background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(58,123,213,0.06));
+  box-shadow: 0 0 0 1px rgba(0,210,255,0.12), 0 20px 50px rgba(0,0,0,0.3);
+}
+.featured-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  padding: 0.22rem 1rem; border-radius: 99px; font-size: 0.7rem; font-weight: 700;
+  background: var(--grad); color: #fff; white-space: nowrap; letter-spacing: 0.04em;
+}
+.price-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+.price-name { font-family: var(--heading); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem; }
+.price-amount {
+  font-family: var(--heading); font-size: 2.6rem; font-weight: 800; line-height: 1;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 0.75rem 0 0.5rem;
+}
+.price-amount sup { font-size: 1.2rem; }
+.price-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.8rem; flex: 1; }
+.price-features li {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  font-size: 0.875rem; color: var(--muted);
+}
+.price-features li::before { content: '✓'; color: var(--cyan); font-weight: 700; flex-shrink: 0; }
+.price-cta {
+  display: block; text-align: center; padding: 0.7rem 1rem;
+  border-radius: 99px; font-weight: 600; font-size: 0.9rem;
+  text-decoration: none; cursor: pointer;
+  border: 1px solid rgba(0,210,255,0.28); color: var(--cyan);
+  background: rgba(0,210,255,0.05); transition: all 0.2s; font-family: var(--body);
+}
+.price-cta:hover { background: var(--grad); color: #fff; border-color: transparent; }
+.price-card.featured .price-cta { background: var(--grad); color: #fff; border-color: transparent; }
+.price-card.featured .price-cta:hover { opacity: 0.85; }
+
+/* Comparison ribbon */
+.compare-strip {
+  display: grid; grid-template-columns: 1.5fr repeat(3, 1fr);
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 3rem;
+}
+.cs-head {
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600; font-size: 0.8rem;
+  display: flex; align-items: center;
+}
+.cs-head.plan {
+  justify-content: center; text-align: center;
+  font-size: 0.82rem; color: var(--cyan); letter-spacing: 0.04em;
+}
+.cs-row {
+  display: contents;
+}
+.cs-cell {
+  padding: 0.85rem 1.2rem; border-bottom: 1px solid var(--border);
+  font-size: 0.83rem; display: flex; align-items: center;
+}
+.cs-cell.feat-name { color: var(--muted); }
+.cs-cell.check { justify-content: center; }
+.cs-cell .yes { color: var(--cyan); font-size: 1rem; }
+.cs-cell .no { color: rgba(255,255,255,0.15); font-size: 1rem; }
+.cs-cell.highlighted { background: rgba(0,210,255,0.04); }
+
+/* Add-ons */
+.section-block { margin-bottom: 2rem; }
+.section-block h3 {
+  font-family: var(--heading); font-size: 1.2rem; font-weight: 700;
+  margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.addons-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0.75rem;
+}
+.addon-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.8rem 1.1rem; background: var(--bg3); border-radius: var(--radius-sm);
+  border: 1px solid var(--border); font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.addon-item:hover { border-color: rgba(0,210,255,0.2); }
+.addon-price { color: var(--cyan); font-weight: 700; font-size: 0.8rem; white-space: nowrap; }
+
+/* Terms */
+.terms-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem; margin-bottom: 3rem;
+}
+.term-card {
+  padding: 1.2rem 1.4rem; border-radius: var(--radius);
+  background: rgba(0,210,255,0.04); border: 1px solid rgba(0,210,255,0.1);
+  display: flex; align-items: flex-start; gap: 0.8rem;
+}
+.term-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+.term-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.2rem; }
+.term-desc { color: var(--muted); font-size: 0.78rem; }
+
+/* CTA */
+.price-cta-banner {
+  margin: 0 0 5rem; padding: 3rem 2.5rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(58,123,213,0.07));
+  border: 1px solid rgba(0,210,255,0.14);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  position: relative; overflow: hidden;
+}
+.price-cta-banner::before {
+  content: ''; position: absolute; top: -60%; right: -5%;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(0,210,255,0.04); filter: blur(60px); pointer-events: none;
+}
+.price-cta-banner h3 { font-family: var(--heading); font-size: 1.6rem; font-weight: 700; margin-bottom: 0.4rem; }
+.price-cta-banner p { color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .compare-strip { display: none; }
+  .price-cta-banner { flex-direction: column; text-align: center; }
+  .addons-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .addons-grid { grid-template-columns: 1fr; }
+  .terms-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="loader"><div class="loader-ring"></div></div>
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+<div class="float-socials">
+  <a href="mailto:hello@yourname.com" class="float-social"><i class="fas fa-envelope"></i></a>
+  <a href="https://facebook.com" target="_blank" class="float-social"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://github.com" target="_blank" class="float-social"><i class="fab fa-github"></i></a>
+  <a href="https://linkedin.com" target="_blank" class="float-social"><i class="fab fa-linkedin-in"></i></a>
+</div>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">&lt;<em>Dev</em>/&gt;</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="pricing.html" class="active">Pricing</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="#" class="nav-cta" onclick="dlCV(event)"><i class="fas fa-download"></i>&nbsp; Download CV</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+<div class="container">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero page-enter">
+    <div class="section-label" style="justify-content:center; margin-bottom:0.8rem">Transparent Rates</div>
+    <h1 class="page-title">Service Packages</h1>
+    <p>Simple, honest pricing for websites and systems. No hidden fees — just quality work delivered on time.</p>
+  </div>
+
+  <!-- TABS -->
+  <div style="display:flex; justify-content:center;">
+    <div class="pricing-tabs reveal">
+      <button class="tab-btn active" onclick="switchTab('web', this)">🌐 Website Packages</button>
+      <button class="tab-btn" onclick="switchTab('system', this)">💻 System Packages</button>
+    </div>
+  </div>
+
+  <!-- ── WEB PACKAGES ── -->
+  <div class="tab-panel active" id="tab-web">
+    <div class="pricing-grid">
+
+      <div class="price-card reveal">
+        <div class="price-icon">🌱</div>
+        <div class="price-name">Basic Landing Page</div>
+        <div class="price-amount"><sup>₱</sup>2,500</div>
+        <div class="price-desc">Perfect for individuals who need a clean online presence fast.</div>
+        <ul class="price-features">
+          <li>1 scrolling / single-page layout</li>
+          <li>Fully responsive on all devices</li>
+          <li>About, Services & Contact sections</li>
+          <li>Simple modern UI design</li>
+          <li>2 free revisions included</li>
+        </ul>
+        <a href="contact.html" class="price-cta">Get Started</a>
+      </div>
+
+      <div class="price-card featured reveal delay-1">
+        <div class="featured-badge">⭐ Most Popular</div>
+        <div class="price-icon">💼</div>
+        <div class="price-name">Portfolio Website</div>
+        <div class="price-amount"><sup>₱</sup>4,000</div>
+        <div class="price-desc">Showcase your work professionally with a personal portfolio.</div>
+        <ul class="price-features">
+          <li>Personal portfolio or resume website</li>
+          <li>Multiple sections & pages</li>
+          <li>Fully responsive design</li>
+          <li>Contact form included</li>
+          <li>Smooth scroll animations</li>
+          <li>2 free revisions included</li>
+        </ul>
+        <a href="contact.html" class="price-cta">Get Started</a>
+      </div>
+
+      <div class="price-card reveal delay-2">
+        <div class="price-icon">🏢</div>
+        <div class="price-name">Business Website</div>
+        <div class="price-amount"><sup>₱</sup>5,500</div>
+        <div class="price-desc">A complete website for your business or brand.</div>
+        <ul class="price-features">
+          <li>Up to 5 separate pages</li>
+          <li>Responsive layout & design</li>
+          <li>Basic scroll animations</li>
+          <li>Contact / inquiry page</li>
+          <li>Professional business UI</li>
+          <li>2 free revisions included</li>
+        </ul>
+        <a href="contact.html" class="price-cta">Get Started</a>
+      </div>
+
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="section-block reveal">
+      <h3>📋 Feature Comparison</h3>
+      <div class="compare-strip">
+        <div class="cs-head">Feature</div>
+        <div class="cs-head plan">Landing<br>₱2,500</div>
+        <div class="cs-head plan">Portfolio<br>₱4,000</div>
+        <div class="cs-head plan">Business<br>₱5,500</div>
+
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Responsive Design</div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Number of Pages</div>
+          <div class="cs-cell check">1</div>
+          <div class="cs-cell check highlighted">Multi</div>
+          <div class="cs-cell check">Up to 5</div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Contact Form</div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Scroll Animations</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Portfolio / Projects Section</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Multi-page Navigation</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="no">—</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Free Revisions</div>
+          <div class="cs-cell check">2</div>
+          <div class="cs-cell check highlighted">2</div>
+          <div class="cs-cell check">2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SYSTEM PACKAGES ── -->
+  <div class="tab-panel" id="tab-system">
+    <div class="pricing-grid">
+
+      <div class="price-card reveal">
+        <div class="price-icon">⚙️</div>
+        <div class="price-name">Starter CRUD System</div>
+        <div class="price-amount"><sup>₱</sup>4,500</div>
+        <div class="price-desc">For simple data management with full CRUD functionality.</div>
+        <ul class="price-features">
+          <li>Create, Read, Update, Delete</li>
+          <li>Simple database setup</li>
+          <li>Basic & clean UI</li>
+          <li>Data listing with search</li>
+          <li>2 free revisions included</li>
+        </ul>
+        <a href="contact.html" class="price-cta">Get Started</a>
+      </div>
+
+      <div class="price-card featured reveal delay-1">
+        <div class="featured-badge">⭐ Best Value</div>
+        <div class="price-icon">🖥️</div>
+        <div class="price-name">Basic Management System</div>
+        <div class="price-amount"><sup>₱</sup>7,000</div>
+        <div class="price-desc">A complete system with authentication & admin dashboard.</div>
+        <ul class="price-features">
+          <li>Login & Register module</li>
+          <li>Full CRUD functions</li>
+          <li>Admin dashboard</li>
+          <li>Responsive design</li>
+          <li>User role management</li>
+          <li>2 free revisions included</li>
+        </ul>
+        <a href="contact.html" class="price-cta">Get Started</a>
+      </div>
+
+      <div class="price-card reveal delay-2">
+        <div class="price-icon">🚀</div>
+        <div class="price-name">Standard System Package</div>
+        <div class="price-amount"><sup>₱</sup>10,000</div>
+        <div class="price-desc">Full-featured system with multiple modules & reporting.</div>
+        <ul class="price-features">
+          <li>Multiple system modules</li>
+          <li>User roles & permissions</li>
+          <li>Reports & PDF export</li>
+          <li>Improved UI & dashboard</li>
+          <li>Advanced data tables</li>
+          <li>2 free revisions included</li>
+        </ul>
+        <a href="contact.html" class="price-cta">Get Started</a>
+      </div>
+
+    </div>
+
+    <!-- System Comparison -->
+    <div class="section-block reveal">
+      <h3>📋 Feature Comparison</h3>
+      <div class="compare-strip">
+        <div class="cs-head">Feature</div>
+        <div class="cs-head plan">Starter<br>₱4,500</div>
+        <div class="cs-head plan">Basic Mgmt<br>₱7,000</div>
+        <div class="cs-head plan">Standard<br>₱10,000</div>
+
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Full CRUD Operations</div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Login / Register</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Admin Dashboard</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">User Roles</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="yes">✓</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Multiple Modules</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="no">—</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Reports / PDF Export</div>
+          <div class="cs-cell check"><span class="no">—</span></div>
+          <div class="cs-cell check highlighted"><span class="no">—</span></div>
+          <div class="cs-cell check"><span class="yes">✓</span></div>
+        </div>
+        <div class="cs-row">
+          <div class="cs-cell feat-name">Free Revisions</div>
+          <div class="cs-cell check">2</div>
+          <div class="cs-cell check highlighted">2</div>
+          <div class="cs-cell check">2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ADD-ONS ── -->
+  <div class="section-block reveal">
+    <h3>🛠 Available Add-ons</h3>
+    <div class="addons-grid">
+      <div class="addon-item"><span>Login / Register System</span><span class="addon-price">+₱1,000</span></div>
+      <div class="addon-item"><span>Admin Dashboard</span><span class="addon-price">+₱1,500 – ₱3,000</span></div>
+      <div class="addon-item"><span>Reports / PDF Export</span><span class="addon-price">+₱1,500</span></div>
+      <div class="addon-item"><span>Database Setup & Config</span><span class="addon-price">+₱1,000 – ₱2,500</span></div>
+      <div class="addon-item"><span>UI / Design Improvements</span><span class="addon-price">+₱500 – ₱2,000</span></div>
+      <div class="addon-item"><span>Bug Fixing</span><span class="addon-price">₱300 – ₱1,000</span></div>
+      <div class="addon-item"><span>Extra Revisions (per revision)</span><span class="addon-price">₱300 – ₱800</span></div>
+    </div>
+  </div>
+
+  <!-- ── TERMS ── -->
+  <div class="section-block reveal">
+    <h3>📌 Terms & Conditions</h3>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-icon">💵</div>
+        <div><div class="term-title">50% Down Payment</div><div class="term-desc">A 50% downpayment is required before I start working on your project.</div></div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon">🔁</div>
+        <div><div class="term-title">2 Free Revisions</div><div class="term-desc">Each package includes 2 free revisions. Additional revisions are billed separately.</div></div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon">➕</div>
+        <div><div class="term-title">Extra Features = Extra Pay</div><div class="term-desc">Features not included in the base package will require additional payment.</div></div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon">💾</div>
+        <div><div class="term-title">Source Code on Full Payment</div><div class="term-desc">Full source code is released only after complete payment has been received.</div></div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon">📦</div>
+        <div><div class="term-title">Small to Medium Projects</div><div class="term-desc">I specialize in small to medium-scale websites and management systems.</div></div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon">📅</div>
+        <div><div class="term-title">Timeline Varies</div><div class="term-desc">Delivery time depends on complexity. Estimated timeline is discussed upon agreement.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOTTOM CTA ── -->
+  <div class="price-cta-banner reveal">
+    <div>
+      <h3>Not sure which package?</h3>
+      <p>Send me a message and I'll help you figure out exactly what you need — no pressure, no sales talk.</p>
+    </div>
+    <div style="display:flex; gap:1rem; flex-shrink:0; flex-wrap:wrap;">
+      <a href="projects.html" class="btn btn-ghost">View Projects</a>
+      <a href="contact.html" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Message Me</a>
+    </div>
+  </div>
+
+</div><!-- end container -->
+</div><!-- end page-wrap -->
+
+<footer>
+  <div class="container">
+    <div class="footer-logo">&lt;Dev/&gt;</div>
+    <p>Built by <strong>Your Name</strong> · Freelance Web & System Developer · Philippines 🇵🇭</p>
+    <p style="margin-top:0.3rem">© 2025 All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('gone'), 500));
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
+  document.getElementById('back-top').classList.toggle('visible', scrollY > 400);
+});
+
+const ham = document.getElementById('hamburger'), nl = document.getElementById('nav-links');
+ham.addEventListener('click', () => {
+  nl.classList.toggle('open');
+  const sp = ham.querySelectorAll('span');
+  if (nl.classList.contains('open')) {
+    sp[0].style.transform='rotate(45deg) translate(5px,5px)';
+    sp[1].style.opacity='0';
+    sp[2].style.transform='rotate(-45deg) translate(5px,-5px)';
+  } else { sp.forEach(s=>{s.style.transform='';s.style.opacity='';}); }
+});
+nl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  nl.classList.remove('open');
+  ham.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});
+}));
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+function dlCV(e) { e.preventDefault(); alert('📄 Replace this with your actual CV file link!'); }
+</script>
+</body>
+</html>
