@@ -339,7 +339,10 @@ h1.hero-title {
 </footer>
 
 <script>
-window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('gone'), 500));
+// Hide loader on load or after 1.5s max (fallback)
+const hideLoader = () => document.getElementById('loader').classList.add('gone');
+window.addEventListener('load', () => setTimeout(hideLoader, 300));
+setTimeout(hideLoader, 1500);
 
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
