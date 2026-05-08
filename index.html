@@ -195,7 +195,6 @@ h1.hero-title {
     <li><a href="projects.html">Projects</a></li>
     <li><a href="pricing.html">Pricing</a></li>
     <li><a href="contact.html">Contact</a></li>
-    <li><a href="#" class="nav-cta" onclick="dlCV(event)"><i class="fas fa-download"></i>&nbsp; Download CV</a></li>
   </ul>
 </nav>
 
@@ -383,9 +382,6 @@ setTimeout(type, 900);
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-function dlCV(e) { e.preventDefault(); alert('📄 Replace this with your actual CV file link!'); }
-</script>
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));</script>
 </body>
 </html>
