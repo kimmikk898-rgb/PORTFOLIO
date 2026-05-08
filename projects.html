@@ -141,7 +141,7 @@
     <li><a href="projects.html" class="active">Projects</a></li>
     <li><a href="pricing.html">Pricing</a></li>
     <li><a href="contact.html">Contact</a></li>
-    <li><a href="#" class="nav-cta" onclick="dlCV(event)"><i class="fas fa-download"></i>&nbsp; Download CV</a></li>
+
   </ul>
 </nav>
 
@@ -155,137 +155,22 @@
       <p>A curated collection of websites, management systems, and web applications I've built — showcasing clean code and great design.</p>
     </div>
 
-    <!-- STATS STRIP -->
-    <div class="stats-strip">
-      <div class="strip-stat reveal"><div class="strip-num">20+</div><div class="strip-lbl">Projects Built</div></div>
-      <div class="strip-stat reveal delay-1"><div class="strip-num">15+</div><div class="strip-lbl">Happy Clients</div></div>
-      <div class="strip-stat reveal delay-2"><div class="strip-num">6+</div><div class="strip-lbl">System Projects</div></div>
-      <div class="strip-stat reveal delay-3"><div class="strip-num">10+</div><div class="strip-lbl">Websites Launched</div></div>
-    </div>
-
-    <!-- FILTER -->
-    <div class="filter-bar reveal">
-      <button class="filter-btn active" onclick="filter('all',this)">All</button>
-      <button class="filter-btn" onclick="filter('website',this)">🌐 Websites</button>
-      <button class="filter-btn" onclick="filter('system',this)">💻 Systems</button>
-      <button class="filter-btn" onclick="filter('data',this)">📊 Data / Academic</button>
-    </div>
-
     <!-- GRID -->
     <div class="projects-grid" id="projects-grid">
 
-      <div class="project-card reveal" data-cat="system">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#071525,#0d2440)"><span>🏥</span></div>
+      <div class="project-card reveal">
+        <div class="proj-thumb" style="background:linear-gradient(135deg,#061a2e,#0a2d4a)"><span>💧</span></div>
         <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">Full Stack</span></div>
-          <div class="proj-title">Healthcare Management System</div>
-          <p class="proj-desc">Comprehensive patient records system with appointment tracking, admin dashboard, user roles, and PDF report export for a local clinic.</p>
+          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">Billing</span></div>
+          <div class="proj-title">Water Billing System</div>
+          <p class="proj-desc">A full-featured water billing management system with customer records, monthly billing generation, payment tracking, and an admin dashboard. Built for local water utility providers.</p>
           <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">Bootstrap</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal delay-1" data-cat="system">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#061220,#0a1e38)"><span>👴</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">Thesis</span><span class="tag-cyan">Web App</span></div>
-          <div class="proj-title">AGAPO Care Connect</div>
-          <p class="proj-desc">Senior Citizen Information & Assistance Management System for a local barangay — featuring senior registration, health records, and admin dashboard.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">React</span><span class="tech-pill">TypeScript</span><span class="tech-pill">Supabase</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal delay-2" data-cat="system">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#071018,#0b1a28)"><span>📄</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">PHP</span></div>
-          <div class="proj-title">Document Tracking System</div>
-          <p class="proj-desc">Deep-teal themed document routing and status tracking system with full CRUD, user roles, and tracking history built on WAMP/MySQL localhost.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">WAMP</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal" data-cat="website">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#080e1e,#0d1836)"><span>🛒</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">Website</span><span class="tag-cyan">Business</span></div>
-          <div class="proj-title">Business Landing Page</div>
-          <p class="proj-desc">Sleek, conversion-focused business landing page with animated hero section, services, testimonials, and an integrated contact form.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">React</span><span class="tech-pill">Tailwind</span><span class="tech-pill">Vercel</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal delay-1" data-cat="website">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#060e1c,#0a1830)"><span>💼</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">Portfolio</span><span class="tag-cyan">Website</span></div>
-          <div class="proj-title">Personal Portfolio Site</div>
-          <p class="proj-desc">Premium dark-theme personal portfolio with hero section, project showcase, pricing page, and contact form — deployed on Vercel.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal delay-2" data-cat="data">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#06101a,#0a1c2e)"><span>📊</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">Data</span><span class="tag-cyan">Academic</span></div>
-          <div class="proj-title">OLAP Data Cube System</div>
-          <p class="proj-desc">Interactive OLAP data cube visualization with drill-down, roll-up, and slice-dice operations — built as an academic project for a Data Warehousing course.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">HTML</span><span class="tech-pill">D3.js</span><span class="tech-pill">JavaScript</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal" data-cat="data">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#0a0d1c,#111530)"><span>🎮</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">Game</span><span class="tag-cyan">Academic</span></div>
-          <div class="proj-title">OSQuest — Quiz Platform</div>
-          <p class="proj-desc">Arcade-style multi-subject quiz game for Operating Systems topics with 150+ questions per subject, scoreboard, and full responsive design.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">React</span><span class="tech-pill">Vite</span><span class="tech-pill">Vercel</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal delay-1" data-cat="system">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#080c1a,#0d1530)"><span>🏪</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">System</span><span class="tag-cyan">Inventory</span></div>
-          <div class="proj-title">Inventory Management System</div>
-          <p class="proj-desc">Inventory tracking system with product management, stock alerts, transaction history, and user login/register for small businesses.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">PHP</span><span class="tech-pill">MySQL</span><span class="tech-pill">jQuery</span></div>
-            <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-card reveal delay-2" data-cat="website">
-        <div class="proj-thumb" style="background:linear-gradient(135deg,#060a18,#0b1228)"><span>🍽️</span></div>
-        <div class="proj-body">
-          <div class="proj-tags"><span class="tag-cyan">Website</span><span class="tag-cyan">Restaurant</span></div>
-          <div class="proj-title">Restaurant Landing Page</div>
-          <p class="proj-desc">Modern restaurant website with animated menu section, gallery, reservation form, and Google Maps integration. Mobile-first responsive design.</p>
-          <div class="proj-footer">
-            <div class="tech-pills"><span class="tech-pill">HTML</span><span class="tech-pill">CSS</span><span class="tech-pill">JS</span></div>
+            <div class="tech-pills">
+              <span class="tech-pill">TypeScript</span>
+              <span class="tech-pill">Tailwind</span>
+              <span class="tech-pill">Supabase</span>
+              <span class="tech-pill">MySQL</span>
+            </div>
             <a href="#" class="proj-link"><i class="fas fa-external-link-alt"></i> Demo</a>
           </div>
         </div>
@@ -317,21 +202,11 @@ ham.addEventListener('click', () => {
   else { sp.forEach(s=>{s.style.transform='';s.style.opacity='';}); }
 });
 
-function filter(cat, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.project-card').forEach(c => {
-    if (cat === 'all' || c.dataset.cat === cat) c.classList.remove('hide');
-    else c.classList.add('hide');
-  });
-}
-
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-function dlCV(e) { e.preventDefault(); alert('📄 Replace this with your actual CV file link!'); }
 </script>
 </body>
 </html>
